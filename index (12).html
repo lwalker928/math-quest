@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Quest | Learn · Solve · Level Up</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#edf9f8;background:#10191d}*{box-sizing:border-box}body{margin:0}header{padding:20px max(20px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #294248}.brand{font-weight:850;letter-spacing:.06em;font-size:1.25rem}.brand span{color:#50e0cd}button{cursor:pointer;font:inherit;border:0;border-radius:12px;padding:12px 16px;background:#50e0cd;color:#102225;font-weight:750}button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:3px}.ghost{background:#243b40;color:#f4ffff}main{max-width:1100px;margin:auto;padding:36px 20px}.hero{padding:32px;border:1px solid #315057;border-radius:22px;background:linear-gradient(120deg,#1b3437,#18262e)}h1{font-size:clamp(2rem,5vw,3.3rem);margin:8px 0}h2{margin:0 0 14px}p{color:#bbcece;line-height:1.55}.eyebrow{color:#50e0cd;font-weight:750;letter-spacing:.12em;font-size:.8rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:24px}.tile{background:#1a292e;border:1px solid #345055;border-radius:18px;padding:22px;min-height:170px}.tile .icon{font-size:2rem}.tile h3{margin:12px 0 4px}.tile p{margin:0;font-size:.9rem}.section{margin-top:32px}.panel{background:#1a292e;border:1px solid #345055;border-radius:18px;padding:22px}.problem{font-size:1.2rem;color:#fff}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.choices button{background:#27454a;color:#fff;border:1px solid #48747a}.choices button:hover{background:#32646a}.feedback{min-height:48px;font-weight:650;color:#75e6d7}.muted{font-size:.9rem}.portal-nav{display:flex;gap:10px;flex-wrap:wrap}.portal-nav button[aria-pressed="true"]{background:#50e0cd;color:#102225}.portal-nav button[aria-pressed="false"]{background:#243b40;color:#f4ffff}.portal{display:none}.portal.active{display:block}.mini{color:#50e0cd;font-size:.85rem;font-weight:700}.tile button{margin-top:14px}.notice{padding:12px 16px;border:1px solid #49747a;border-radius:12px;background:#1a3437;color:#d7efec}.field{display:grid;gap:6px;margin:12px 0}.field input,.field select{background:#10191d;border:1px solid #638184;color:#fff;border-radius:10px;padding:12px;font:inherit;width:100%}.field label{font-weight:700}.list-card{padding:14px;border-bottom:1px solid #345055}.list-card:last-child{border:0}.roster-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.small-button{padding:8px 11px;font-size:.85rem}.help{font-size:.85rem;color:#bbcece}.student-row{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.student-row span{color:#c9e0df}.field input[type=file]{padding:10px}.tag{display:inline-block;background:#28464a;color:#8bf0e3;padding:3px 8px;border-radius:9px;font-size:.75rem;margin:3px}.section-sub{margin-top:18px}.file-hint{color:#e5d6a2}footer{max-width:1100px;margin:40px auto;padding:20px;color:#9fb7b8;font-size:.85rem}@media(max-width:500px){.choices{grid-template-columns:1fr}header{gap:10px}.brand{font-size:1rem}}
+
+/* Assignment and fact-fluency workspace */
+.assignment-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.check-list{max-height:200px;overflow:auto;border:1px solid #46666a;border-radius:12px;padding:8px 14px;background:#10191d}
+.check-row{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #294248}
+.check-row:last-child{border-bottom:0}.check-row input{accent-color:#50e0cd;width:19px;height:19px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:15px 0}
+.stat{background:#102327;border:1px solid #345055;border-radius:13px;padding:14px}.stat strong{font-size:1.5rem;display:block;color:#80f2e2}.stat span{color:#c5d7d6;font-size:.82rem}
+.fact-problem{font-size:clamp(2.4rem,7vw,4.4rem);font-weight:800;text-align:center;padding:12px}
+.fact-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.fact-actions input{width:125px;font-size:1.4rem;text-align:center}
+.field input[type=number]{background:#10191d;border:1px solid #638184;color:#fff;border-radius:10px;padding:12px;font:inherit;width:100%}
+.subtle{border-top:1px solid #345055;margin-top:18px;padding-top:14px}.hidden{display:none!important}
+@media print {
+ body{background:white!important;color:black!important}
+ header,.notice,#studentPortal,#teacherPortal>section:not(#reportingSection),
+ #reportClass,#reportStudent,#printStudentReport,
+ #reportingSection>.panel>p,#classwideReport{display:none!important}
+ #teacherPortal{display:block!important}
+ #reportingSection{display:block!important}
+ #reportingSection .panel{border:0!important;background:white!important;color:black!important}
+ #studentReport,#studentReport *{color:black!important;background:white!important}
+ #studentReport th,#studentReport td{border-color:#888!important}
+}
+.model-visual{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:14px 0;max-width:100%;overflow-x:auto}
+.model-group{border:2px solid #39aeb0;border-radius:12px;padding:8px;display:grid;gap:4px;grid-template-columns:repeat(var(--cols),minmax(14px,24px));background:rgba(45,180,180,.08)}
+.model-dot{display:inline-block;width:18px;height:18px;border-radius:50%;background:#2db6b5}
+.model-row{display:flex;gap:5px;align-items:center;margin:5px 0}
+.model-array{display:grid;gap:5px;grid-template-columns:repeat(var(--cols),20px);border:2px solid #39aeb0;border-radius:12px;padding:12px}
+@media print{#modelReporting{display:none!important}}
+@media print {
+ body:has(#iepTracker.printing) header,body:has(#iepTracker.printing) footer,
+ body:has(#iepTracker.printing) #studentPortal,
+ body:has(#iepTracker.printing) #teacherPortal>section:not(#iepTracker),
+ body:has(#iepTracker.printing) #iepTracker button,
+ body:has(#iepTracker.printing) #iepTracker input,
+ body:has(#iepTracker.printing) #iepTracker select,
+ body:has(#iepTracker.printing) #iepTracker textarea,
+ body:has(#iepTracker.printing) #iepTracker label,
+ body:has(#iepTracker.printing) #iepTracker .assignment-grid,
+ body:has(#iepTracker.printing) #iepEvidence {display:none!important}
+ body:has(#iepTracker.printing) #teacherPortal{display:block!important}
+ body:has(#iepTracker.printing) #iepTracker{display:block!important;color:black!important}
+ body:has(#iepTracker.printing) #iepTracker .panel{background:white!important;color:black!important}
+}
+
+/* Teacher Portal quick navigation: links do not change saved progress. */
+html{scroll-behavior:smooth}
+.teacher-shortcuts{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin-top:16px}
+.teacher-shortcut{display:flex;align-items:center;gap:11px;min-height:80px;padding:16px;border:1px solid #456e70;border-radius:15px;background:#1a3034;color:#f1fffd;text-decoration:none;font-weight:750;transition:background .15s,border-color .15s}
+.teacher-shortcut:hover{background:#275052;border-color:#6de7d5}
+.teacher-shortcut:focus-visible,.back-to-tools:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.shortcut-icon{font-size:1.7rem}.shortcut-arrow{margin-left:auto;color:#8be9dd}
+.back-to-tools{display:inline-block;margin:0 0 10px;color:#8be9dd;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+#teacherPortal .section[id]{scroll-margin-top:14px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{#teacherQuickNav,.back-to-tools{display:none!important}}
+</style>
+</head>
+<body>
+<header><div class="brand">⬡ MATH <span>QUEST</span></div><div class="portal-nav"><button type="button" data-portal="student" aria-pressed="true">🎓 Student Portal</button><button type="button" data-portal="teacher" aria-pressed="false">📋 Teacher Portal</button></div></header>
+<main>
+<div class="notice">🧪 Demo mode: fictional students only. Practice data is saved in this browser on this device; no accounts or secure school data storage.</div>
+<div id="studentPortal" class="portal active">
+<section class="hero"><div class="eyebrow">LEARN · SOLVE · LEVEL UP</div><h1>Welcome to Math Quest</h1><p id="welcome">A place to build math skills, solve challenges, and learn one step at a time.</p><button type="button" onclick="document.getElementById('practice').scrollIntoView({behavior:'smooth'})">Try a math challenge</button></section>
+<section class="section"><h2>Explore Math Quest</h2><div class="grid"><div class="tile"><div class="icon">✖</div><h3>Fact Arena</h3><p>Multiplication facts and practice games.</p></div><div class="tile"><div class="icon">➗</div><h3>Solver Studio</h3><p>Step-by-step multiplication and division help.</p></div><div class="tile"><div class="icon">◷</div><h3>Time Quest</h3><p>Clocks and elapsed time.</p></div><div class="tile"><div class="icon">▦</div><h3>Operation Sort</h3><p>Choose the right operation for word problems.</p></div><div class="tile"><div class="icon">📖</div><h3>Vocabulary Lab</h3><p>Math words, definitions, and read-aloud support.</p></div><div class="tile"><div class="icon">◈</div><h3>Logic Lab</h3><p>Number puzzles and reasoning challenges.</p></div></div></section>
+<section class="section" id="practice"><h2>Try Operation Sort</h2><div class="panel"><p class="muted">Practice activity · Your answer is checked immediately.</p><p class="problem" id="question"></p><button class="ghost" id="readProblem" type="button">🔊 Read problem</button><p>Which operation would you use?</p><div class="choices" id="choices"></div><p class="feedback" id="feedback" aria-live="polite"></p><button id="next" type="button" style="display:none">Next problem →</button></div></section>
+
+<section class="section" id="factArena"><h2>✖ Fact Arena · Multiplication Practice</h2><div class="panel">
+<p class="help">Demo: choose a fictional student to preview that student's assigned multiplication quest. Practice results are saved in this browser and appear in the teacher dashboard. My Focus Facts uses your previous answers to give extra practice on difficult facts while still reviewing other facts.</p>
+<div class="field"><label for="practiceStudent">Practice as fictional student</label><select id="practiceStudent"></select></div>
+<div class="field"><label for="practiceType">Practice type</label><select id="practiceType"><option value="assigned">Teacher-assigned practice</option><option value="independent">Independent practice</option><option value="screening">Initial Mastery Challenge (20 questions)</option></select></div>
+<div id="independentSetup" class="hidden"><p class="help">Choose a multiplication table, mixed practice, or My Focus Facts for extra practice on missed facts. Independent practice contributes to fact mastery but does not complete a teacher assignment.</p><div class="field"><label for="independentFacts">Multiplication facts to practice</label><select id="independentFacts"><option value="mixed">Mixed facts (0–12)</option><option value="personalized">⭐ My Focus Facts (personalized)</option></select></div><div class="field"><label for="independentCount">Number of questions</label><select id="independentCount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div><div class="field"><label for="independentMode">Practice mode</label><select id="independentMode"><option value="learning">Learning with hints</option><option value="fluency">Fluency without hints</option></select></div></div>
+<div id="screeningSetup" class="hidden"><p class="help">Initial screening: 20 mixed facts, no hints or answer feedback until the end. No time limit. Results help guide practice; this is not a complete test of every fact.</p><div class="field"><label for="screeningRange">Assessment range</label><select id="screeningRange"><option value="5">0–5 · Foundations</option><option value="10">0–10 · Developing</option><option value="12">0–12 · Full range</option></select></div></div><div id="assignedSetup" class="field"><label for="practiceAssignment">Assigned multiplication quest</label><select id="practiceAssignment"></select></div>
+<p id="factIntro" class="help" aria-live="polite"></p>
+<div id="factGame" class="hidden"><div class="stats"><div class="stat"><strong id="factCount">0 / 0</strong><span>Questions completed</span></div><div class="stat"><strong id="factCorrect">0%</strong><span>Accuracy</span></div><div class="stat"><strong id="factTime">0s</strong><span>Time spent</span></div></div>
+<div id="factQuestion" class="fact-problem" aria-live="polite"></div>
+<div class="fact-actions"><label for="factAnswer">Your answer</label><input type="number" id="factAnswer" min="0" max="144" inputmode="numeric" aria-label="Multiplication answer"><button type="button" id="checkFact">Check answer</button><button type="button" class="ghost" id="readFact">🔊 Read aloud</button><button type="button" class="ghost" id="factHint">Show a hint</button></div>
+<p id="factHintText" class="help" aria-live="polite"></p><p id="factFeedback" class="feedback" aria-live="polite"></p><p class="help">Keyboard shortcut: Enter to check your answer, then Enter again for the next fact. Blank answers will not advance.</p><button type="button" class="hidden" id="nextFact" title="Press Enter again to continue">Next fact →</button><button type="button" class="ghost" id="finishFact">End practice</button>
+</div><div id="factSummary" class="hidden" aria-live="polite"></div>
+</div></section>
+<section class="section" id="visualMultiplication"><h2>🧩 Multiplication Workshop · Learn with Models</h2>
+<div class="panel"><p class="help">Practice multiplication with arrays, equal groups, repeated addition, and guided support. This is instruction—not a fluency assessment. Choose a fictional student to record how independently each problem was solved.</p>
+<div class="field"><label for="modelStudent">Practice as fictional student</label><select id="modelStudent"></select></div>
+<div class="field"><label for="modelType">Choose a learning model</label><select id="modelType"><option value="arrays">Visual arrays (rows and columns)</option><option value="groups">Equal groups</option><option value="addition">Repeated addition</option><option value="guided">Guided multiplication (step-by-step)</option></select></div>
+<div class="field"><label for="modelRange">Factor range</label><select id="modelRange"><option value="5">0–5</option><option value="10">0–10</option><option value="12">0–12</option></select></div>
+<button type="button" id="modelStart">Start 5-question workshop</button>
+<div id="modelActivity" class="hidden">
+<p id="modelCount" class="help"></p><div id="modelProblem" class="fact-problem"></div>
+<div id="modelVisual" class="model-visual" aria-label="Multiplication visual model"></div>
+<p id="modelGuide" class="help"></p>
+<button type="button" class="ghost" id="modelSupport">Show visual or next guided step</button>
+<button type="button" class="ghost" id="modelRead">🔊 Read problem</button>
+<div class="field"><label for="modelAnswer">Your answer</label><input id="modelAnswer" type="number" min="0" max="144" inputmode="numeric"></div>
+<button type="button" id="modelCheck">Check answer</button>
+<button type="button" id="modelNext" class="hidden">Next problem →</button>
+<p id="modelFeedback" class="feedback" aria-live="polite"></p>
+</div><div id="modelSummary" class="hidden" aria-live="polite"></div>
+</div></section>
+</div>
+<div id="teacherPortal" class="portal">
+<section class="hero"><div class="eyebrow">TEACHER PORTAL · DEMO</div><h1>My Classroom</h1><p>Create practice classes and preview how shared student rosters and assignments will work.</p><p class="mini">This demonstration saves fictional data in this browser only; it does not share information across devices.</p></section>
+<section class="section" id="teacherQuickNav"><h2>Jump to a Teacher Tool</h2><p class="help">Choose a box to go straight to that section. Use “Back to tools” to return here.</p><nav class="teacher-shortcuts" aria-label="Teacher tools quick navigation"><a class="teacher-shortcut" href="#rosterSection"><span class="shortcut-icon" aria-hidden="true">👥</span><span>Class Rosters</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#sharedStudentsSection"><span class="shortcut-icon" aria-hidden="true">🔗</span><span>Shared Students</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#createClassSection"><span class="shortcut-icon" aria-hidden="true">➕</span><span>Create a Class</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#assignmentSection"><span class="shortcut-icon" aria-hidden="true">📝</span><span>Assignments</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#reportingSection"><span class="shortcut-icon" aria-hidden="true">📊</span><span>Class Reports</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#iepTracker"><span class="shortcut-icon" aria-hidden="true">🎯</span><span>IEP Goal Tracker</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#modelReporting"><span class="shortcut-icon" aria-hidden="true">🧩</span><span>Workshop Reports</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#progressSection"><span class="shortcut-icon" aria-hidden="true">✖</span><span>Fluency Tracker</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a><a class="teacher-shortcut" href="#browserSavingSection"><span class="shortcut-icon" aria-hidden="true">💾</span><span>Browser Saving</span><span class="shortcut-arrow" aria-hidden="true">↘</span></a></nav></section>
+<section class="section" id="browserSavingSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><div class="panel">
+<h3>💾 Browser Saving · Demo Only</h3>
+<p id="storageStatus" class="help">Fictional classes, assignments, answers, and fact mastery are saved automatically in this browser on this device. They will not sync to other computers. Browser data can be erased by clearing site data or using private browsing. Do not enter real student information.</p>
+<button type="button" class="ghost" id="clearDemoData">Clear saved demo data</button>
+</div></section>
+<section class="section" id="rosterSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>Class Rosters · Practice Mode</h2><div class="panel"><p class="help">Create a class, then add fictional students manually or from a CSV spreadsheet. Fictional practice data is saved in this browser on this device. Do not enter real student information.</p>
+<div class="field"><label for="rosterClass">Choose a practice class</label><select id="rosterClass"></select></div>
+<div class="roster-grid"><div><h3>Add One Student</h3><div class="field"><label for="studentName">Fictional student name</label><input id="studentName" maxlength="70" placeholder="Example: Student A" autocomplete="off"></div><button type="button" id="addStudent">+ Add student</button></div>
+<div><h3>Import a Spreadsheet</h3><p class="help">Save your spreadsheet as a <strong>CSV</strong> file. Use a column named <strong>name</strong>, or <strong>first_name</strong> and <strong>last_name</strong>.</p><div class="field"><label for="csvFile">Choose CSV file (fictional names only)</label><input type="file" id="csvFile" accept=".csv,text/csv"></div><button type="button" id="importStudents">Import practice students</button></div></div>
+<p id="rosterFeedback" class="feedback" aria-live="polite"></p><h3 class="section-sub">Students in This Class</h3><div id="rosterList" class="help">Choose or create a class to begin.</div></div></section>
+<section class="section" id="sharedStudentsSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>Shared Practice Students</h2><div class="panel"><p class="help">Select a student already in one practice class and add them to another class. This demonstrates one student profile in multiple rosters.</p><div class="field"><label for="shareStudent">Student</label><select id="shareStudent"></select></div><div class="field"><label for="shareClass">Add to class</label><select id="shareClass"></select></div><button type="button" id="shareStudentButton">Add student to another class</button><p id="shareFeedback" class="feedback" aria-live="polite"></p><div id="sharedList"></div></div></section>
+<section class="section" id="createClassSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>Try Creating a Practice Class</h2><div class="panel"><div class="field"><label for="className">Practice class name</label><input id="className" maxlength="60" placeholder="Example: Math Resource" /></div><button type="button" id="addClass">+ Add practice class</button><p id="classFeedback" class="feedback" aria-live="polite"></p><div id="classList"><div class="list-card">📘 Example: WIN Intervention <span class="mini">(sample)</span></div></div></div></section>
+
+<section class="section" id="reportingSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>📊 Multiplication Reporting Center</h2><div class="panel">
+<p class="help">Fictional demo data only. Reports summarize saved sessions and are not standardized assessments or IEP progress evidence by themselves.</p>
+<div class="assignment-grid"><div class="field"><label for="reportClass">Classwide report</label><select id="reportClass"></select></div>
+<div class="field"><label for="reportStudent">Student progress report</label><select id="reportStudent"></select></div></div>
+<div id="classwideReport"></div><div id="studentReport"></div>
+<button type="button" class="ghost" id="printStudentReport">Print student report</button>
+</div></section>
+<section class="section" id="assignmentSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>📝 Assign Math Quests · Practice Mode</h2><div class="panel">
+<p class="help">Create a multiplication facts assignment for a whole class, selected students, or one student. Fictional practice information is saved in this browser on this device.</p>
+<div class="assignment-grid"><div>
+<div class="field"><label for="assignmentName">Assignment name</label><input id="assignmentName" maxlength="65" value="Multiplication Fact Quest" autocomplete="off"></div>
+<div class="field"><label for="assignmentClass">Choose class</label><select id="assignmentClass"></select></div>
+<div class="field"><label for="assignmentScope">Assign to</label><select id="assignmentScope"><option value="class">Entire class</option><option value="group">Selected students (group)</option><option value="individual">One student</option></select></div>
+<div id="assignmentRecipients" class="check-list" role="group" aria-label="Choose practice students"></div>
+</div><div>
+<div class="field"><label for="factMin">Smallest factor</label><select id="factMin"></select></div>
+<div class="field"><label for="factMax">Largest factor</label><select id="factMax"></select></div>
+<div class="field"><label for="factQuestions">Questions per session</label><select id="factQuestions"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
+<div class="field"><label for="factMode">Practice style</label><select id="factMode"><option value="practice">Learning practice (hints allowed)</option><option value="fluency">Fluency check (no hints)</option></select></div>
+<button type="button" id="createAssignment">+ Assign Multiplication Quest</button><p class="help">Fluency checks record accuracy and elapsed time; learning practice also records hint use.</p>
+</div></div><p id="assignmentFeedback" class="feedback" aria-live="polite"></p>
+<div class="subtle"><h3>Assigned Quests</h3><div id="assignmentList" class="help">No assignments created yet.</div></div>
+</div></section>
+<section class="section" id="iepTracker"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>🎯 IEP Goal Tracker · Fictional Demo</h2><div class="panel">
+<p class="help"><strong>Prototype only:</strong> Never enter real student names, actual IEP text, or identifiable education records. This browser-only feature has no accounts or secure storage. Teachers must review and approve evidence before it counts toward a goal.</p>
+<div class="assignment-grid">
+<div><div class="field"><label for="iepStudent">Fictional student</label><select id="iepStudent"></select></div>
+<div class="field"><label for="iepGoalSelect">Saved goals</label><select id="iepGoalSelect"></select></div>
+<button type="button" class="ghost" id="iepNewGoal">+ New goal</button>
+<button type="button" class="ghost" id="iepDeleteGoal">Delete selected goal</button></div>
+<div><div class="field"><label for="iepGoalTitle">Goal title</label><input id="iepGoalTitle" maxlength="100" placeholder="Example: Multiplication fact accuracy"></div>
+<div class="field"><label for="iepGoalText">Annual goal (fictional example only)</label><textarea id="iepGoalText" rows="4" placeholder="Paste a fictional sample goal here."></textarea></div>
+<div class="field"><label for="iepObjectives">Short-term objectives (optional; one per line)</label><textarea id="iepObjectives" rows="3"></textarea></div></div></div>
+<div class="assignment-grid">
+<div><div class="field"><label for="iepCriterion">Target accuracy (%)</label><input id="iepCriterion" type="number" min="1" max="100" value="80"></div>
+<div class="field"><label for="iepRequired">Successful trials required</label><input id="iepRequired" type="number" min="1" max="20" value="4"></div>
+<div class="field"><label for="iepWindow">Within most recent trials</label><input id="iepWindow" type="number" min="1" max="20" value="5"></div></div>
+<div><p><strong>Eligible activity types (teacher-approved)</strong></p>
+<label class="check-row"><input type="checkbox" id="iepLinkScreening"> Independent mastery screening</label>
+<label class="check-row"><input type="checkbox" id="iepLinkFluency"> Independent or assigned fluency practice</label>
+<label class="check-row"><input type="checkbox" id="iepLinkWorkshop"> Multiplication workshop (visual supports recorded)</label>
+<label class="check-row"><input type="checkbox" id="iepIndependent" checked> Count only trials without requested hints/support</label>
+</div></div>
+<button type="button" id="iepSaveGoal">Save goal and activity links</button><p id="iepMessage" class="feedback" aria-live="polite"></p>
+<hr><h3>Review evidence before counting it</h3>
+<p class="help">Select eligible completed sessions below. Selecting a session approves it as evidence for this goal. You can revoke approval later. A session is not automatically approved just because its activity type matches.</p>
+<div id="iepEvidence"></div>
+<h3>Progress toward goal criterion</h3><div id="iepProgress" class="help"></div>
+<h3>Draft progress statement</h3><div id="iepStatement" class="list-card">Choose or create a fictional goal.</div>
+<button type="button" class="ghost" id="iepCopy">Copy progress statement</button>
+<button type="button" class="ghost" id="iepPrint">Print goal report</button>
+</div></section>
+<section class="section" id="modelReporting"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>🧩 Multiplication Workshop · Instructional Progress</h2><div class="panel">
+<p class="help">Track model-based practice separately from multiplication fluency and screening. Support counts show when students requested visual or guided assistance. Use fictional data only.</p>
+<div class="field"><label for="modelReportStudent">Student</label><select id="modelReportStudent"></select></div>
+<div id="modelReportContent" class="help">Complete a workshop to see results.</div>
+</div></section>
+<section class="section" id="progressSection"><a class="back-to-tools" href="#teacherQuickNav">↑ Back to tools</a><h2>📊 Multiplication Fluency Tracker</h2><div class="panel"><p class="help">Practice results by fictional student. Each student has one profile even if they belong to multiple classes. Time is measured from the first question until completion; hints are counted separately.</p><div class="field"><label for="progressStudent">Student</label><select id="progressStudent"></select></div><div id="progressList" class="help">No practice results yet.</div></div></section>
+</div>
+</main><footer>Math Quest prototype · Fictional test data only · Browser-only saving, no accounts.</footer>
+<script>
+const questions=[{text:'There are 6 tables with 4 chairs at each table. How many chairs are there altogether?',answer:'Multiplication',why:'There are 6 equal groups of 4 chairs.'},{text:'Jordan has 35 stickers and gives away 12. How many stickers remain?',answer:'Subtraction',why:'The amount decreases when stickers are given away.'},{text:'A teacher shares 24 pencils equally among 6 students. How many pencils does each student get?',answer:'Division',why:'A total is separated into equal groups.'},{text:'Maya has 18 beads and buys 7 more. How many does she have now?',answer:'Addition',why:'Two amounts are combined.'}];let index=0;function speak(text){if(!('speechSynthesis'in window)){alert('Read-aloud is not supported in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.85;speechSynthesis.speak(u)}function render(){const q=questions[index];document.getElementById('question').textContent=q.text;document.getElementById('feedback').textContent='';document.getElementById('next').style.display='none';const choices=document.getElementById('choices');choices.replaceChildren();for(const operation of ['Addition','Subtraction','Multiplication','Division']){const b=document.createElement('button');b.textContent=operation;b.onclick=()=>{const right=operation===q.answer;document.getElementById('feedback').textContent=right?'Correct! '+q.why:'Not quite. '+q.why+' Try '+q.answer+'.';document.getElementById('next').style.display='inline-block';for(const c of choices.children)c.disabled=true};choices.append(b)}}document.getElementById('next').onclick=()=>{index=(index+1)%questions.length;render()};document.getElementById('readProblem').onclick=()=>speak(questions[index].text);document.querySelectorAll('[data-portal]').forEach(button=>button.addEventListener('click',()=>{const selected=button.dataset.portal;document.querySelectorAll('[data-portal]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.getElementById('studentPortal').classList.toggle('active',selected==='student');document.getElementById('teacherPortal').classList.toggle('active',selected==='teacher');window.scrollTo({top:0,behavior:'smooth'})}));const demo={classes:[{id:'c1',name:'WIN Intervention'}],students:[],memberships:[]};let nextId=2;
+const el=id=>document.getElementById(id);
+function addOption(select,value,label){const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option)}
+function renderRosters(){const selected=el('rosterClass').value;for(const [id,prior] of [['rosterClass',selected],['shareClass',el('shareClass').value]]){const node=el(id);node.replaceChildren();for(const c of demo.classes)addOption(node,c.id,c.name);if(demo.classes.some(c=>c.id===prior))node.value=prior}
+const chosen=el('rosterClass').value;el('shareStudent').replaceChildren();for(const student of demo.students)addOption(el('shareStudent'),student.id,student.name);
+const list=el('rosterList');list.replaceChildren();const roster=demo.memberships.filter(m=>m.classId===chosen).map(m=>demo.students.find(s=>s.id===m.studentId)).filter(Boolean);if(!roster.length){list.textContent='No practice students in this class yet.'}else{for(const st of roster){const row=document.createElement('div');row.className='list-card student-row';const name=document.createElement('span');name.textContent='👤 '+st.name;const remove=document.createElement('button');remove.className='ghost small-button';remove.textContent='Remove from class';remove.onclick=()=>{demo.memberships=demo.memberships.filter(m=>!(m.classId===chosen&&m.studentId===st.id));saveMathQuestDemo();renderRosters()};row.append(name,remove);list.append(row)}}
+const shared=el('sharedList');shared.replaceChildren();for(const st of demo.students){const classIds=demo.memberships.filter(m=>m.studentId===st.id).map(m=>m.classId);if(classIds.length>1){const row=document.createElement('div');row.className='list-card';const title=document.createElement('strong');title.textContent=st.name;row.append(title);for(const id of classIds){const label=document.createElement('span');label.className='tag';label.textContent=demo.classes.find(c=>c.id===id)?.name||'';row.append(label)}shared.append(row)}}if(!shared.children.length)shared.textContent='No students shared between practice classes yet.';
+}
+function addToClass(name,classId){name=name.trim();if(!name)return false;let student=demo.students.find(s=>s.name.toLocaleLowerCase()===name.toLocaleLowerCase());if(!student){student={id:'s'+nextId++,name};demo.students.push(student)}if(demo.memberships.some(m=>m.studentId===student.id&&m.classId===classId))return false;demo.memberships.push({studentId:student.id,classId});return true}
+el('addClass').onclick=()=>{const field=el('className');const name=field.value.trim();if(!name){el('classFeedback').textContent='Type a class name first.';return}if(demo.classes.some(c=>c.name.toLowerCase()===name.toLowerCase())){el('classFeedback').textContent='That practice class already exists.';return}const id='c'+nextId++;demo.classes.push({id,name});saveMathQuestDemo();const row=document.createElement('div');row.className='list-card';row.textContent='📘 '+name+' (practice only)';el('classList').append(row);el('classFeedback').textContent='Practice class added! It will remain in this browser after a refresh.';field.value='';renderRosters();el('rosterClass').value=id;renderRosters()};
+el('rosterClass').onchange=renderRosters;
+el('addStudent').onclick=()=>{const field=el('studentName');const added=addToClass(field.value,el('rosterClass').value);el('rosterFeedback').textContent=added?'Practice student added.':'Enter a name, or this student is already in the class.';if(added)field.value='';renderRosters()};
+el('shareStudentButton').onclick=()=>{const st=el('shareStudent').selectedOptions[0];if(!st){el('shareFeedback').textContent='Add a practice student first.';return}const added=addToClass(st.textContent,el('shareClass').value);el('shareFeedback').textContent=added?'Student added to the second class using the same practice profile.':'Student is already in that class.';renderRosters()};
+function parseCSV(input){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<input.length;i++){const ch=input[i];if(ch==='"'){if(quoted&&input[i+1]==='"'){cell+='"';i++}else quoted=!quoted}else if(ch===','&&!quoted){row.push(cell);cell=''}else if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&input[i+1]==='\n')i++;row.push(cell);if(row.some(v=>v.trim()))rows.push(row);row=[];cell=''}else cell+=ch}if(quoted)throw Error('The CSV has an unfinished quoted field.');row.push(cell);if(row.some(v=>v.trim()))rows.push(row);return rows}
+el('importStudents').onclick=async()=>{const file=el('csvFile').files[0];if(!file){el('rosterFeedback').textContent='Choose a CSV file first.';return}if(!file.name.toLowerCase().endsWith('.csv')||file.size>500000){el('rosterFeedback').textContent='Please choose a CSV file smaller than 500 KB.';return}try{const rows=parseCSV((await file.text()).replace(/^\uFEFF/,''));if(rows.length<2)throw Error('CSV needs a header and at least one student.');const header=rows.shift().map(x=>x.trim().toLowerCase().replace(/\s+/g,'_'));const nameIndex=header.indexOf('name'),first=header.indexOf('first_name'),last=header.indexOf('last_name');if(nameIndex<0&&first<0)throw Error('Add a name column, or first_name and last_name columns.');let added=0;for(const row of rows.slice(0,200)){const name=nameIndex>=0?row[nameIndex]||'':[row[first]||'',last>=0?row[last]||'':''].join(' ').trim();if(addToClass(name,el('rosterClass').value))added++}renderRosters();el('rosterFeedback').textContent=added+' fictional students added. Nothing was uploaded to a server; the fictional roster is saved in this browser.'}catch(error){el('rosterFeedback').textContent='Could not import: '+error.message}};
+
+// Multiplication assignments and fluency practice — demo only; no network or persistent storage.
+const questState={assignments:[],attempts:[],session:null,startedAt:0,questionStartedAt:0,usedHint:false,questionAnswered:false,history:[],modelAttempts:[],iepGoals:[]};
+for(let i=0;i<=12;i++)addOption(el('independentFacts'),String(i),i+'s facts');
+for(let i=0;i<=12;i++){addOption(el('factMin'),String(i),String(i));addOption(el('factMax'),String(i),String(i))}
+el('factMin').value='0';el('factMax').value='12';
+function enrolled(classId){return demo.memberships.filter(m=>m.classId===classId).map(m=>demo.students.find(s=>s.id===m.studentId)).filter(Boolean)}
+function setOptions(id,entries,placeholder){const node=el(id),old=node.value;node.replaceChildren();if(placeholder)addOption(node,'',placeholder);for(const item of entries)addOption(node,item.id,item.name);if(entries.some(e=>e.id===old))node.value=old}
+function refreshQuestUI(){
+setOptions('assignmentClass',demo.classes);
+const cls=el('assignmentClass').value,people=enrolled(cls),scope=el('assignmentScope').value;
+const recipients=el('assignmentRecipients');recipients.replaceChildren();recipients.classList.toggle('hidden',scope==='class');
+if(scope!=='class'){if(!people.length)recipients.textContent='Add fictional students to this class first.';for(const st of people){const label=document.createElement('label');label.className='check-row';const cb=document.createElement('input');cb.type=scope==='individual'?'radio':'checkbox';cb.name='questRecipient';cb.value=st.id;const txt=document.createElement('span');txt.textContent=st.name;label.append(cb,txt);recipients.append(label)}}
+setOptions('practiceStudent',demo.students,'Choose a fictional student');
+setOptions('progressStudent',demo.students,'Choose a fictional student');
+renderAssignments();renderStudentQuests();renderProgress();
+}
+function renderAssignments(){const list=el('assignmentList');list.replaceChildren();if(!questState.assignments.length){list.textContent='No multiplication quests assigned yet.';return}
+for(const a of questState.assignments){const card=document.createElement('div');card.className='list-card';const heading=document.createElement('strong');heading.textContent='✖ '+a.name;const detail=document.createElement('p');detail.className='help';const className=demo.classes.find(c=>c.id===a.classId)?.name||'Class';detail.textContent=className+' · '+a.studentIds.length+' student(s) · Factors '+a.min+'–'+a.max+' · '+a.count+' facts · '+(a.screening?'No hints · Results at end':a.mode==='fluency'?'Fluency check':'Learning practice');const remove=document.createElement('button');remove.type='button';remove.className='ghost small-button';remove.textContent='Remove assignment';remove.onclick=()=>{questState.assignments=questState.assignments.filter(x=>x.id!==a.id);saveMathQuestDemo();refreshQuestUI()};card.append(heading,detail,remove);list.append(card)}}
+function renderStudentQuests(){
+ const id=el('practiceStudent').value,independent=el('practiceType').value==='independent',screening=el('practiceType').value==='screening';
+ const assignments=questState.assignments.filter(a=>a.studentIds.includes(id));
+ setOptions('practiceAssignment',assignments.map(a=>({id:a.id,name:a.name+' · '+a.count+' facts'})),'Choose an assigned quest');
+ el('assignedSetup').classList.toggle('hidden',independent||screening);
+ el('screeningSetup').classList.toggle('hidden',!screening);
+ el('independentSetup').classList.toggle('hidden',!independent);
+ el('factIntro').textContent=!id?'Choose a fictional student to begin.':screening?'Choose an assessment range. All results appear after 20 questions.':independent?'Choose your facts and start independent practice.':assignments.length?'Choose an assigned quest, then start practicing.':'No multiplication quests assigned to this student yet.';
+ el('factGame').classList.add('hidden');el('factSummary').classList.add('hidden');questState.session=null;
+ let btn=el('startQuest');if(!btn){btn=document.createElement('button');btn.id='startQuest';btn.type='button';el('factIntro').after(btn);btn.onclick=startQuest}
+ btn.classList.remove('hidden');btn.textContent=screening?'Start Initial Mastery Challenge':independent?'Start Independent Practice':'Start Fact Arena';btn.disabled=!id||(!independent&&!screening&&!assignments.length);
+}
+function createQuest(){const classId=el('assignmentClass').value,scope=el('assignmentScope').value,roster=enrolled(classId);let ids=scope==='class'?roster.map(s=>s.id):[...el('assignmentRecipients').querySelectorAll('input:checked')].map(x=>x.value);const min=Number(el('factMin').value),max=Number(el('factMax').value);if(!ids.length){el('assignmentFeedback').textContent='Add practice students to the class and choose who receives the quest.';return}if(min>max){el('assignmentFeedback').textContent='Smallest factor cannot be greater than largest factor.';return}const name=el('assignmentName').value.trim()||'Multiplication Fact Quest';const assignment={id:'a'+nextId++,name,classId,studentIds:ids,min,max,count:Number(el('factQuestions').value),mode:el('factMode').value};questState.assignments.push(assignment);el('assignmentFeedback').textContent='Assigned '+name+' to '+ids.length+' fictional student(s). Switch to Student Portal to try it.';refreshQuestUI()}
+// Personalized practice uses recent attempts, prioritizes mistakes, and still reviews other facts.
+// Reversed facts share a mastery record; teacher-assigned practice remains unchanged.
+function makeFocusQuestions(studentId,count){
+ const recent=new Map();
+ for(const r of questState.history){
+  if(r.studentId!==studentId)continue;
+  const key=Math.min(r.x,r.y)+'-'+Math.max(r.x,r.y);
+  const arr=recent.get(key)||[];arr.push(r);if(arr.length>10)arr.shift();recent.set(key,arr);
+ }
+ const pool=[];
+ for(let x=0;x<=12;x++)for(let y=x;y<=12;y++){
+  const records=recent.get(x+'-'+y)||[];
+  const wrong=records.filter(r=>!r.correct).length;
+  const accuracy=records.length?(records.length-wrong)/records.length:null;
+  // New facts remain in the rotation; struggling facts are more likely.
+  const weight=!records.length?2:1+Math.round(9*(1-accuracy))+(records.at(-1).correct?0:3);
+  pool.push({x,y,weight});
+ }
+ const result=[];let last='';
+ for(let i=0;i<count;i++){
+  const choices=pool.filter(f=>f.x+'-'+f.y!==last);
+  const total=choices.reduce((sum,f)=>sum+f.weight,0);
+  let pick=Math.random()*total,chosen=choices[choices.length-1];
+  for(const f of choices){pick-=f.weight;if(pick<0){chosen=f;break}}
+  last=chosen.x+'-'+chosen.y;
+  result.push(Math.random()<0.5?[chosen.x,chosen.y]:[chosen.y,chosen.x]);
+ }
+ return result;
+}
+function startQuest(){
+ const id=el('practiceStudent').value,independent=el('practiceType').value==='independent',screening=el('practiceType').value==='screening';
+ if(!id)return;
+ let a;
+ if(screening){const max=Number(el('screeningRange').value);a={id:null,name:'Initial Mastery Challenge · 0–'+max,screening:true,min:0,max,count:20,mode:'fluency',independent:true};}
+ else if(independent){const selected=el('independentFacts').value;const personalized=selected==='personalized';const fact=selected==='mixed'||personalized?null:Number(selected);a={id:null,name:personalized?'Independent · My Focus Facts':fact===null?'Independent · Mixed Facts':'Independent · '+fact+'s Facts',personalized,min:0,max:12,count:Number(el('independentCount').value),mode:el('independentMode').value,independent:true,fact};}
+ else{a=questState.assignments.find(x=>x.id===el('practiceAssignment').value&&x.studentIds.includes(id));if(!a)return}
+ const pairs=[];
+ if(independent&&a.personalized)pairs.push(...makeFocusQuestions(id,a.count));
+ else if(independent&&a.fact!==null){for(let y=0;y<=12;y++)pairs.push([a.fact,y]);}
+ else if(screening){for(let x=0;x<=a.max;x++)for(let y=x;y<=a.max;y++)pairs.push([x,y]);}
+ else{for(let x=a.min;x<=a.max;x++)for(let y=a.min;y<=a.max;y++)pairs.push([x,y]);}
+ if(!a.personalized)for(let i=pairs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pairs[i],pairs[j]]=[pairs[j],pairs[i]]}
+ const source=pairs.slice();while(pairs.length<a.count){pairs.push(source[Math.floor(Math.random()*source.length)].slice())}
+ questState.session={studentId:id,assignmentId:a.id,config:a,correct:0,done:0,hints:0,errors:0,elapsed:0,questionIndex:0,questions:pairs.slice(0,a.count)};
+ questState.startedAt=Date.now();el('factCorrect').parentElement.classList.toggle('hidden',screening);el('factHintText').textContent='';el('factGame').classList.remove('hidden');el('factSummary').classList.add('hidden');el('startQuest').classList.add('hidden');nextFactQuestion();
+}
+function nextFactQuestion(){const ss=questState.session;if(!ss)return;const a=ss.config;if(ss.questionIndex>=a.count){finishQuest();return}const [x,y]=ss.questions[ss.questionIndex];questState.questionStartedAt=Date.now();questState.usedHint=false;questState.questionAnswered=false;el('factQuestion').textContent=x+' × '+y+' = ?';el('factAnswer').value='';el('factAnswer').disabled=false;el('checkFact').disabled=false;el('factHint').classList.toggle('hidden',a.mode==='fluency'||!!a.screening);el('factHintText').textContent='';el('factFeedback').textContent='';el('nextFact').classList.add('hidden');el('factAnswer').focus();updateFactStats()}
+function updateFactStats(){const ss=questState.session;if(!ss)return;const a=ss.config;el('factCount').textContent=ss.done+' / '+a.count;el('factCorrect').textContent=ss.done?Math.round(100*ss.correct/ss.done)+'%':'—';el('factTime').textContent=Math.round((Date.now()-questState.startedAt)/1000)+'s'}
+function checkFact(){const ss=questState.session;if(!ss||questState.questionAnswered)return;const input=el('factAnswer');if(input.value.trim()===''||!Number.isInteger(Number(input.value))){el('factFeedback').textContent='Enter a whole-number answer first.';return}const [x,y]=ss.questions[ss.questionIndex];const answer=Number(input.value),correct=answer===x*y;ss.done++;if(correct)ss.correct++;else ss.errors++;if(questState.usedHint)ss.hints++;ss.elapsed+=Date.now()-questState.questionStartedAt;questState.questionAnswered=true;if(!ss.responses)ss.responses=[];ss.responses.push(answer);input.disabled=true;el('checkFact').disabled=true;el('factHint').classList.add('hidden');el('factFeedback').textContent=ss.config.screening?'Answer recorded. Press Enter again for the next question.':correct?'Correct! '+x+' groups of '+y+' equals '+(x*y)+'.':'Not quite. '+x+' × '+y+' = '+(x*y)+'. Think of '+x+' equal groups of '+y+'.';questState.history.push({studentId:ss.studentId,x,y,correct,usedHint:questState.usedHint,answer,at:Date.now(),independent:!!ss.config.independent,screening:!!ss.config.screening});ss.questionIndex++;el('nextFact').textContent=ss.questionIndex>=ss.questions.length?'See my results →':'Next fact →';el('nextFact').classList.remove('hidden');el('nextFact').focus();updateFactStats()}
+function finishQuest(){const ss=questState.session;if(!ss)return;const a=ss.config;if(!a)return;const elapsed=Math.round((Date.now()-questState.startedAt)/1000);const attempt={studentId:ss.studentId,assignmentId:ss.assignmentId,name:a.name,done:ss.done,correct:ss.correct,hints:ss.hints,seconds:elapsed,startedAt:questState.startedAt,completedAt:Date.now(),mode:a.mode,independent:!!a.independent,screening:!!a.screening,rangeMax:a.screening?a.max:null};if(ss.done)questState.attempts.push(attempt);el('factGame').classList.add('hidden');el('factSummary').classList.remove('hidden');el('factSummary').replaceChildren();const h=document.createElement('h3');h.textContent=ss.done===a.count?'Quest complete!':'Practice ended';const p=document.createElement('p');p.textContent=ss.done?'Accuracy: '+Math.round(ss.correct/ss.done*100)+'% ('+ss.correct+'/'+ss.done+') · Time: '+elapsed+' seconds · Hints used: '+ss.hints+'.':'No questions completed.';el('factSummary').append(h,p);
+if(a.screening){
+ const missed=ss.questions.filter(([x,y],i)=>ss.responses&&ss.responses[i]!==x*y).map(([x,y])=>x+' × '+y);
+ const detail=document.createElement('p');
+ detail.textContent=missed.length?'Facts to practice: '+missed.join(', ')+'.':'All 20 answers were correct! Continue reviewing facts for fluency.';
+ el('factSummary').append(detail);
+}
+el('factCorrect').parentElement.classList.remove('hidden');el('startQuest').classList.remove('hidden');questState.session=null;renderProgress()}
+function renderProgress(){renderReporting();const list=el('progressList');list.replaceChildren();const id=el('progressStudent').value;if(!id){list.textContent='Select a fictional student to view results.';return}const attempts=questState.attempts.filter(a=>a.studentId===id);if(!attempts.length){list.textContent='No completed multiplication practice sessions for this student yet.';return}renderFactMastery(id,list);for(const a of attempts){const div=document.createElement('div');div.className='list-card';const label=document.createElement('strong');label.textContent=a.name+' · '+(a.screening?'Initial screening':a.independent?'Independent':'Assigned')+' · '+(a.screening?'No hints · Results at end':a.mode==='fluency'?'Fluency check':'Learning practice');const p=document.createElement('p');p.className='help';p.textContent=a.correct+'/'+a.done+' correct ('+Math.round(100*a.correct/a.done)+'%) · '+a.seconds+' seconds · '+a.hints+' hints';div.append(label,p);list.append(div)}}
+function renderFactMastery(id,container){
+ const history=questState.history.filter(r=>r.studentId===id);
+ if(!history.length)return;
+ const stats=new Map();for(const r of history){const x=Math.min(r.x,r.y),y=Math.max(r.x,r.y),key=x+'×'+y;const item=stats.get(key)||{x,y,total:0,correct:0,missed:0};item.total++;if(r.correct)item.correct++;else item.missed++;stats.set(key,item)}
+ const heading=document.createElement('h3');heading.textContent='Fact Mastery · Repeated Mistakes';container.append(heading);
+ const note=document.createElement('p');note.className='help';note.textContent='Each cell shows correct / attempted. Reversed facts (such as 6×7 and 7×6) are grouped together. Green: 90%+, yellow: 70–89%, red: below 70%, gray: not practiced. Mastery needs repeated practice; one correct answer is not enough.';container.append(note);
+ const most=[...stats.values()].filter(v=>v.missed>0).sort((a,b)=>b.missed-a.missed||a.correct/a.total-b.correct/b.total).slice(0,8);
+ const misses=document.createElement('div');misses.className='list-card';const title=document.createElement('strong');title.textContent='Most-missed facts';misses.append(title);const text=document.createElement('p');text.className='help';text.textContent=most.length?most.map(v=>v.x+'×'+v.y+': '+v.missed+' missed of '+v.total).join(' · '):'No incorrect facts recorded yet.';misses.append(text);container.append(misses);
+ const scroll=document.createElement('div');scroll.style.cssText='overflow-x:auto;margin:12px 0';const table=document.createElement('table');table.style.cssText='border-collapse:separate;border-spacing:3px;font-size:12px;text-align:center;min-width:640px';
+ const head=document.createElement('tr');const corner=document.createElement('th');corner.textContent='×';head.append(corner);for(let y=0;y<=12;y++){const th=document.createElement('th');th.textContent=y;th.style.padding='5px';head.append(th)}table.append(head);
+ for(let x=0;x<=12;x++){const tr=document.createElement('tr'),th=document.createElement('th');th.textContent=x;tr.append(th);for(let y=0;y<=12;y++){const v=stats.get(Math.min(x,y)+'×'+Math.max(x,y));const td=document.createElement('td');td.style.cssText='padding:6px 3px;border-radius:5px;min-width:38px;font-weight:600';if(!v){td.textContent='—';td.style.background='#3c4650';td.style.color='#fff';td.title=x+'×'+y+': not practiced'}else{const pct=100*v.correct/v.total;td.textContent=v.correct+'/'+v.total;td.style.background=pct>=90?'#176c4d':pct>=70?'#83620b':'#9d3037';td.style.color='#fff';td.title=x+'×'+y+': '+v.correct+' correct of '+v.total+' ('+Math.round(pct)+'%)'}tr.append(td)}table.append(tr)}scroll.append(table);container.append(scroll);
+ const caution=document.createElement('p');caution.className='help';caution.textContent='Demo only: this chart and practice history are saved locally in this browser. Do not enter real student information.';container.append(caution);
+}
+
+
+// Steps 16–20: classwide mastery, progress trends, screening comparisons,
+// focus-fact recommendations, and a printer-friendly student report.
+function reportNode(tag,text,cls){
+ const n=document.createElement(tag);if(text!==undefined)n.textContent=text;
+ if(cls)n.className=cls;return n;
+}
+function reportDateTime(at){if(!Number.isFinite(at))return 'Not recorded (older session)';return new Date(at).toLocaleString('en-US',{year:'numeric',month:'2-digit',day:'2-digit',hour:'numeric',minute:'2-digit'});}
+function reportPct(correct,total){return total?Math.round(100*correct/total)+'%':'—'}
+function reportFactKey(x,y){return Math.min(x,y)+'×'+Math.max(x,y)}
+function reportStudentName(id){return demo.students.find(s=>s.id===id)?.name||'Student'}
+function reportFacts(studentIds){
+ const allowed=new Set(studentIds),facts=new Map();
+ for(const r of questState.history){
+  if(!allowed.has(r.studentId))continue;
+  const key=reportFactKey(r.x,r.y);
+  const v=facts.get(key)||{key,total:0,correct:0,missed:0};
+  v.total++;if(r.correct)v.correct++;else v.missed++;
+  facts.set(key,v);
+ }
+ return [...facts.values()];
+}
+function reportFocus(facts){
+ return facts.filter(f=>f.missed>0).sort((a,b)=>b.missed-a.missed||a.correct/a.total-b.correct/b.total).slice(0,6);
+}
+function reportTable(headings,rows){
+ const wrap=reportNode('div');wrap.style.overflowX='auto';
+ const t=reportNode('table');t.style.cssText='border-collapse:collapse;width:100%;min-width:470px;margin:12px 0';
+ const header=reportNode('tr');
+ for(const h of headings){const th=reportNode('th',h);th.style.cssText='text-align:left;border-bottom:1px solid #608087;padding:8px';header.append(th)}
+ t.append(header);
+ for(const row of rows){
+  const tr=reportNode('tr');
+  for(const value of row){const td=reportNode('td',String(value));td.style.cssText='border-bottom:1px solid #30464a;padding:8px';tr.append(td)}
+  t.append(tr);
+ }
+ wrap.append(t);return wrap;
+}
+function renderReporting(){
+ const priorClass=el('reportClass').value,priorStudent=el('reportStudent').value;
+ const cls=el('reportClass'),student=el('reportStudent');
+ cls.replaceChildren();student.replaceChildren();
+ for(const c of demo.classes)addOption(cls,c.id,c.name);
+ if(demo.classes.some(c=>c.id===priorClass))cls.value=priorClass;
+ const members=enrolled(cls.value);
+ for(const s of members)addOption(student,s.id,s.name);
+ if(members.some(s=>s.id===priorStudent))student.value=priorStudent;
+ const cbox=el('classwideReport'),sbox=el('studentReport');
+ cbox.replaceChildren();sbox.replaceChildren();
+ cbox.append(reportNode('h3','Classwide Multiplication Snapshot'));
+ if(!members.length){cbox.append(reportNode('p','No fictional students in this class yet.','help'))}
+ else {
+  const rows=members.map(s=>{
+   const sessions=questState.attempts.filter(a=>a.studentId===s.id);
+   const facts=reportFacts([s.id]);
+   const total=sessions.reduce((n,a)=>n+a.done,0),correct=sessions.reduce((n,a)=>n+a.correct,0);
+   return [s.name,sessions.length,reportPct(correct,total),reportFocus(facts).map(f=>f.key).join(', ')||'No recorded misses'];
+  });
+  cbox.append(reportTable(['Student','Sessions','Overall accuracy','Focus facts'],rows));
+  const facts=reportFacts(members.map(s=>s.id));
+  const common=reportFocus(facts);
+  cbox.append(reportNode('p',common.length?'Frequently missed across this class: '+common.map(f=>f.key+' ('+f.missed+' misses)').join(' · '):'No missed facts recorded for this class.','help'));
+  cbox.append(reportNode('p','Overall accuracy combines different question sets and practice modes; compare similar assessments for growth.','help'));
+ }
+ const id=student.value;
+ sbox.append(reportNode('h3','Individual Progress · '+(id?reportStudentName(id):'No student selected')));
+ if(!id){sbox.append(reportNode('p','Choose a student to view the report.','help'));return}
+ const attempts=questState.attempts.filter(a=>a.studentId===id);
+ if(!attempts.length){sbox.append(reportNode('p','No completed sessions yet.','help'));return}
+ sbox.append(reportNode('h4','Session-by-session progress'));
+ sbox.append(reportTable(['Session','Date and time','Activity','Accuracy','Duration'],attempts.map((a,i)=>[
+  i+1,reportDateTime(a.startedAt),a.screening?'Initial screening (0–'+a.rangeMax+')':a.independent?'Independent practice':'Assigned practice',
+  reportPct(a.correct,a.done),a.seconds+' sec'
+ ])));
+ const screenings=attempts.filter(a=>a.screening);
+ sbox.append(reportNode('h4','Initial screening and reassessment comparison'));
+ if(!screenings.length)sbox.append(reportNode('p','No completed initial screenings yet.','help'));
+ else {
+  sbox.append(reportTable(['Screening','Date and time','Range','Accuracy','Duration'],screenings.map((a,i)=>[
+   i+1,reportDateTime(a.startedAt),'0–'+a.rangeMax,reportPct(a.correct,a.done),a.seconds+' sec'
+  ])));
+  const same=screenings.filter(a=>a.rangeMax===screenings[screenings.length-1].rangeMax);
+  if(same.length>1){
+   const first=same[0],last=same[same.length-1];
+   const delta=Math.round(100*last.correct/last.done)-Math.round(100*first.correct/first.done);
+   sbox.append(reportNode('p','Change across the same screening range: '+(delta>0?'+':'')+delta+' percentage points. Question sets may differ, so this is a screening trend, not proof of complete mastery.','help'));
+  }
+ }
+ const focus=reportFocus(reportFacts([id]));
+ sbox.append(reportNode('h4','Suggested facts to practice'));
+ sbox.append(reportNode('p',focus.length?focus.map(f=>f.key+' ('+f.correct+'/'+f.total+' correct)').join(' · '):'No missed facts recorded. Continue mixed review and check unpracticed facts.','help'));
+ sbox.append(reportNode('p','Recommendation: use My Focus Facts for additional practice, then reassess with the same screening range.','help'));
+}
+
+// Step 12: local-only prototype persistence. Never use with identifiable student data.
+const MATH_QUEST_STORAGE_KEY = 'math-quest-demo-v1';
+let localSaveAvailable = true;
+function saveMathQuestDemo(){
+  try {
+    localStorage.setItem(MATH_QUEST_STORAGE_KEY, JSON.stringify({
+      version:1,
+      classes:demo.classes,
+      students:demo.students,
+      memberships:demo.memberships,
+      nextId,
+      assignments:questState.assignments,
+      attempts:questState.attempts,
+      history:questState.history,
+      modelAttempts:questState.modelAttempts,
+      iepGoals:questState.iepGoals
+    }));
+    localSaveAvailable = true;
+  } catch (error) {
+    localSaveAvailable = false;
+    console.warn('Math Quest could not save demo data in this browser.', error);
+    if (el('storageStatus')) el('storageStatus').textContent =
+      'Browser saving is unavailable. Your fictional practice data may disappear after refresh.';
+  }
+}
+function restoreMathQuestDemo(){
+  try {
+    const raw=localStorage.getItem(MATH_QUEST_STORAGE_KEY);
+    if (!raw) return;
+    const saved=JSON.parse(raw);
+    if (!saved || saved.version!==1 || !Array.isArray(saved.classes) ||
+        !Array.isArray(saved.students) || !Array.isArray(saved.memberships) ||
+        !Array.isArray(saved.assignments) || !Array.isArray(saved.attempts) ||
+        !Array.isArray(saved.history)) return;
+    demo.classes=saved.classes;
+    demo.students=saved.students;
+    demo.memberships=saved.memberships;
+    questState.assignments=saved.assignments;
+    questState.attempts=saved.attempts;
+    questState.history=saved.history;
+    questState.modelAttempts=Array.isArray(saved.modelAttempts)?saved.modelAttempts:[];
+    questState.iepGoals=Array.isArray(saved.iepGoals)?saved.iepGoals:[];
+    nextId=Math.max(Number(saved.nextId)||2,2);
+  } catch (error) {
+    console.warn('Math Quest could not restore browser demo data.', error);
+  }
+}
+restoreMathQuestDemo();
+// Save after roster, assignment, and fact-history changes.
+const originalAddToClass=addToClass;
+addToClass=function(...args){
+  const result=originalAddToClass(...args);
+  if(result)saveMathQuestDemo();
+  return result;
+};
+const originalCreateQuest=createQuest;
+createQuest=function(...args){
+  const before=questState.assignments.length;
+  const result=originalCreateQuest(...args);
+  if(questState.assignments.length!==before)saveMathQuestDemo();
+  return result;
+};
+const originalCheckFact=checkFact;
+checkFact=function(...args){
+  const before=questState.history.length;
+  const result=originalCheckFact(...args);
+  if(questState.history.length!==before)saveMathQuestDemo();
+  return result;
+};
+const originalFinishQuest=finishQuest;
+finishQuest=function(...args){
+  const result=originalFinishQuest(...args);
+  saveMathQuestDemo();if(typeof iepRenderEvidence==='function')iepRenderEvidence();
+  return result;
+};
+
+el('reportClass').addEventListener('change',renderReporting);
+el('reportStudent').addEventListener('change',renderReporting);
+el('printStudentReport').addEventListener('click',()=>window.print());
+const priorRenderRosters=renderRosters;
+renderRosters=function(...args){const result=priorRenderRosters(...args);renderReporting();return result};
+renderReporting();
+
+// Steps 21–25: visual models, equal groups, repeated addition, guided practice,
+// and separate instructional-support reporting.
+let modelSession=null;
+function modelOptionSync(){
+ const ids=['modelStudent','modelReportStudent'];
+ for(const id of ids){
+  const node=el(id),old=node.value;node.replaceChildren();
+  for(const student of demo.students)addOption(node,student.id,student.name);
+  if(demo.students.some(student=>student.id===old))node.value=old;
+ }
+ renderModelReport();
+}
+function modelDot(){const d=document.createElement('span');d.className='model-dot';return d}
+function modelRender(){
+ if(!modelSession)return;
+ const m=modelSession,[x,y]=m.questions[m.index],area=el('modelVisual');
+ el('modelCount').textContent='Problem '+(m.index+1)+' of '+m.questions.length;
+ el('modelProblem').textContent=x+' × '+y+' = ?';
+ area.replaceChildren();el('modelGuide').textContent='';
+ el('modelAnswer').value='';el('modelAnswer').disabled=false;
+ el('modelCheck').disabled=false;el('modelNext').classList.add('hidden');
+ el('modelFeedback').textContent='';m.help=0;m.checked=false;m.questionStarted=Date.now();
+ const kind=m.kind;
+ if(kind==='arrays'){
+  const grid=document.createElement('div');grid.className='model-array';
+  grid.style.setProperty('--cols',String(Math.max(y,1)));
+  for(let i=0;i<x*y;i++)grid.append(modelDot());
+  area.append(grid);
+  el('modelGuide').textContent=x+' rows with '+y+' dots in each row. Count the total dots.';
+ }else if(kind==='groups'){
+  for(let i=0;i<x;i++){
+   const group=document.createElement('div');group.className='model-group';
+   group.style.setProperty('--cols',String(Math.max(y,1)));
+   for(let j=0;j<y;j++)group.append(modelDot());
+   area.append(group);
+  }
+  el('modelGuide').textContent=x+' equal groups with '+y+' dots in each group. Count all the dots.';
+ }else if(kind==='addition'){
+  el('modelGuide').textContent=x===0?'Zero groups means zero.':Array(x).fill(String(y)).join(' + ')+' = ?';
+ }else{
+  el('modelGuide').textContent='Step 1: Identify '+x+' equal groups of '+y+'. Click Show visual or next guided step for help.';
+ }
+ if(x*y===0&&kind!=='guided')area.append(document.createTextNode('Zero dots: multiplying by zero gives zero.'));
+ el('modelAnswer').focus();
+}
+function modelHelp(){
+ if(!modelSession||modelSession.checked)return;
+ const m=modelSession,[x,y]=m.questions[m.index];m.help++;
+ const steps=[
+  'Step 2: '+(x===0?'There are no groups.':Array(x).fill(String(y)).join(' + '))+'.',
+  'Step 3: Count by '+y+': '+(x===0?'0':Array.from({length:x},(_,i)=>(i+1)*y).join(', '))+'.',
+  'Step 4: The product is '+(x*y)+'.'
+ ];
+ if(m.kind==='guided'){
+  el('modelGuide').textContent=steps[Math.min(m.help-1,steps.length-1)];
+  if(m.help===1){
+   const area=el('modelVisual');area.replaceChildren();
+   for(let i=0;i<x;i++){const g=document.createElement('div');g.className='model-group';g.style.setProperty('--cols',String(Math.max(y,1)));for(let j=0;j<y;j++)g.append(modelDot());area.append(g)}
+  }
+ }else{
+  el('modelGuide').textContent=m.help===1?'Try skip-counting: '+(x===0?'0':Array.from({length:x},(_,i)=>(i+1)*y).join(', '))+'.':'The answer is '+(x*y)+'.';
+ }
+}
+function modelCheck(){
+ const m=modelSession;if(!m||m.checked)return;
+ const raw=el('modelAnswer').value.trim();
+ if(raw===''||!Number.isInteger(Number(raw))){el('modelFeedback').textContent='Enter a whole-number answer before continuing.';return}
+ const [x,y]=m.questions[m.index],answer=Number(raw),correct=answer===x*y;
+ m.results.push({x,y,correct,answer,supports:m.help,seconds:Math.round((Date.now()-m.questionStarted)/1000)});
+ m.checked=true;el('modelAnswer').disabled=true;el('modelCheck').disabled=true;
+ el('modelFeedback').textContent=correct?'Correct! '+x+' × '+y+' = '+x*y+'.':'Not quite. '+x+' × '+y+' = '+x*y+'. Review the model before continuing.';
+ el('modelNext').classList.remove('hidden');el('modelNext').textContent=m.index===m.questions.length-1?'See workshop results →':'Next problem →';el('modelNext').focus();
+}
+function modelNext(){
+ const m=modelSession;if(!m||!m.checked)return;
+ m.index++;
+ if(m.index<m.questions.length){modelRender();return}
+ const correct=m.results.filter(r=>r.correct).length,independent=m.results.filter(r=>r.correct&&r.supports===0).length;
+ questState.modelAttempts.push({studentId:m.studentId,kind:m.kind,range:m.max,
+  startedAt:m.startedAt,completedAt:Date.now(),total:m.results.length,correct,independent,
+  supported:m.results.filter(r=>r.supports>0).length,results:m.results});
+ saveMathQuestDemo();iepRenderEvidence();
+ el('modelActivity').classList.add('hidden');
+ const summary=el('modelSummary');summary.classList.remove('hidden');summary.replaceChildren();
+ summary.append(reportNode('h3','Workshop complete!'));
+ summary.append(reportNode('p',correct+'/'+m.results.length+' correct · '+independent+' correct without extra help · '+m.results.filter(r=>r.supports>0).length+' questions with requested support.'));
+ summary.append(reportNode('p','Instructional practice only. These scores do not count toward the independent fact screening.','help'));
+ modelSession=null;renderModelReport();
+}
+function modelStart(){
+ const id=el('modelStudent').value;if(!id){alert('Create a fictional student first.');return}
+ const max=Number(el('modelRange').value),kind=el('modelType').value;
+ const questions=Array.from({length:5},()=>[Math.floor(Math.random()*(max+1)),Math.floor(Math.random()*(max+1))]);
+ modelSession={studentId:id,kind,max,startedAt:Date.now(),questions,index:0,results:[],checked:false,help:0};
+ el('modelSummary').classList.add('hidden');el('modelActivity').classList.remove('hidden');modelRender();
+}
+function renderModelReport(){
+ const node=el('modelReportContent');node.replaceChildren();
+ const id=el('modelReportStudent').value;
+ const attempts=questState.modelAttempts.filter(a=>a.studentId===id);
+ if(!attempts.length){node.textContent='No completed workshops for this fictional student yet.';return}
+ node.append(reportNode('p','Correct without extra help is tracked separately from answers completed after requesting support.','help'));
+ node.append(reportTable(['Date & time','Model','Accuracy','Correct independently','Support requested'],attempts.map(a=>[
+  a.completedAt?new Date(a.completedAt).toLocaleString():'Not recorded',
+  ({arrays:'Arrays',groups:'Equal groups',addition:'Repeated addition',guided:'Guided practice'})[a.kind]||a.kind,
+  a.correct+'/'+a.total,a.independent+'/'+a.total,a.supported+'/'+a.total
+ ])));
+}
+el('modelStart').addEventListener('click',modelStart);
+el('modelSupport').addEventListener('click',modelHelp);
+el('modelCheck').addEventListener('click',modelCheck);
+el('modelNext').addEventListener('click',modelNext);
+el('modelAnswer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(modelSession&&!modelSession.checked)modelCheck()}});
+el('modelRead').addEventListener('click',()=>{if(modelSession){const [x,y]=modelSession.questions[modelSession.index];speak(x+' groups of '+y+'. How many altogether?')}});
+el('modelReportStudent').addEventListener('change',renderModelReport);
+const originalRenderRostersForModels=renderRosters;
+renderRosters=function(...args){const result=originalRenderRostersForModels(...args);modelOptionSync();return result};
+modelOptionSync();
+
+
+// Steps 26–30: teacher-reviewed fictional IEP goal evidence.
+let iepEditingNew=false;
+const iepTypes={screening:'Independent mastery screening',fluency:'Fluency practice',workshop:'Multiplication workshop'};
+function iepActivities(studentId){
+ const rows=[];
+ questState.attempts.forEach((a,i)=>{
+  if(a.studentId!==studentId||!a.done)return;
+  const type=a.screening?'screening':'fluency';
+  rows.push({key:'fact:'+i,type,at:a.completedAt||a.startedAt||0,
+   correct:a.correct,total:a.done,independent:!(a.hints>0),
+   detail:a.screening?'Screening 0–'+a.rangeMax:(a.name||'Fact practice'),
+   hints:a.hints||0});
+ });
+ questState.modelAttempts.forEach((a,i)=>{
+  if(a.studentId!==studentId||!a.total)return;
+  rows.push({key:'workshop:'+i,type:'workshop',at:a.completedAt||a.startedAt||0,
+   correct:a.correct,total:a.total,independent:a.supported===0,
+   detail:'Workshop: '+a.kind, hints:a.supported||0});
+ });
+ return rows.sort((a,b)=>a.at-b.at||a.key.localeCompare(b.key));
+}
+function iepGoal(){return questState.iepGoals.find(g=>g.id===el('iepGoalSelect').value)}
+function iepSyncStudents(){
+ const select=el('iepStudent'),old=select.value;
+ select.replaceChildren();
+ for(const st of demo.students)addOption(select,st.id,st.name);
+ if(demo.students.some(st=>st.id===old))select.value=old;
+ iepSyncGoals();
+}
+function iepSyncGoals(preferId){
+ const select=el('iepGoalSelect'),old=preferId||select.value;
+ select.replaceChildren();
+ const goals=questState.iepGoals.filter(g=>g.studentId===el('iepStudent').value);
+ for(const g of goals)addOption(select,g.id,g.title);
+ if(goals.some(g=>g.id===old))select.value=old;
+ iepLoadGoal();
+}
+function iepLoadGoal(){
+ const g=iepGoal();iepEditingNew=false;
+ el('iepGoalTitle').value=g?.title||'';
+ el('iepGoalText').value=g?.text||'';
+ el('iepObjectives').value=(g?.objectives||[]).join('\n');
+ el('iepCriterion').value=g?.criterion??80;
+ el('iepRequired').value=g?.required??4;
+ el('iepWindow').value=g?.window??5;
+ el('iepLinkScreening').checked=!!g?.links?.includes('screening');
+ el('iepLinkFluency').checked=!!g?.links?.includes('fluency');
+ el('iepLinkWorkshop').checked=!!g?.links?.includes('workshop');
+ el('iepIndependent').checked=g?.independentOnly!==false;
+ iepRenderEvidence();
+}
+function iepNewGoal(){
+ iepEditingNew=true;
+ el('iepGoalSelect').value='';
+ for(const id of ['iepGoalTitle','iepGoalText','iepObjectives'])el(id).value='';
+ el('iepCriterion').value='80';el('iepRequired').value='4';el('iepWindow').value='5';
+ for(const id of ['iepLinkScreening','iepLinkFluency','iepLinkWorkshop'])el(id).checked=false;
+ el('iepIndependent').checked=true;iepRenderEvidence();
+ el('iepGoalTitle').focus();
+}
+function iepSaveGoal(){
+ const studentId=el('iepStudent').value,title=el('iepGoalTitle').value.trim(),text=el('iepGoalText').value.trim();
+ const criterion=Number(el('iepCriterion').value),required=Number(el('iepRequired').value),window=Number(el('iepWindow').value);
+ if(!studentId||!title||!text){el('iepMessage').textContent='Select a fictional student and enter a goal title and goal text.';return}
+ if(!Number.isInteger(criterion)||criterion<1||criterion>100||!Number.isInteger(required)||!Number.isInteger(window)||required<1||window<required||window>20){
+  el('iepMessage').textContent='Enter a target of 1–100% and a valid criterion, such as 4 successful trials within 5.';return;
+ }
+ const links=['screening','fluency','workshop'].filter(type=>el('iepLink'+type[0].toUpperCase()+type.slice(1)).checked);
+ const existing=iepEditingNew?null:iepGoal();
+ const g={id:existing?.id||'goal-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),
+  studentId,title,text,objectives:el('iepObjectives').value.split('\n').map(x=>x.trim()).filter(Boolean),
+  criterion,required,window,links,independentOnly:el('iepIndependent').checked,
+  approved:existing?.approved||[],createdAt:existing?.createdAt||Date.now()};
+ if(existing)Object.assign(existing,g);else questState.iepGoals.push(g);
+ saveMathQuestDemo();iepEditingNew=false;iepSyncGoals(g.id);
+ el('iepMessage').textContent='Fictional goal saved. Review eligible sessions below and approve evidence.';
+}
+function iepEligible(g,a){
+ return g.links.includes(a.type)&&(!g.independentOnly||a.independent);
+}
+function iepEvidenceRows(g){
+ return iepActivities(g.studentId).filter(a=>iepEligible(g,a));
+}
+function iepApproved(g){
+ return iepEvidenceRows(g).filter(a=>g.approved.includes(a.key));
+}
+function iepRenderEvidence(){
+ const box=el('iepEvidence'),progress=el('iepProgress'),statement=el('iepStatement');
+ box.replaceChildren();progress.replaceChildren();statement.textContent='';
+ const g=iepGoal();
+ if(!g){box.textContent='Save a fictional goal to review sessions.';progress.textContent='No goal selected.';statement.textContent='Choose or create a fictional goal.';return}
+ const activities=iepEvidenceRows(g);
+ if(!g.links.length)box.textContent='Choose at least one aligned activity type and save the goal.';
+ else if(!activities.length)box.textContent='No completed sessions meet this goal’s activity and independence rules.';
+ else{
+  for(const a of activities){
+   const label=document.createElement('label');label.className='check-row';
+   const cb=document.createElement('input');cb.type='checkbox';cb.checked=g.approved.includes(a.key);
+   cb.addEventListener('change',()=>{
+    if(cb.checked&&!g.approved.includes(a.key))g.approved.push(a.key);
+    if(!cb.checked)g.approved=g.approved.filter(key=>key!==a.key);
+    saveMathQuestDemo();iepRenderEvidence();
+   });
+   const time=a.at?new Date(a.at).toLocaleString():'Date not recorded';
+   const text=document.createElement('span');
+   text.textContent=time+' · '+a.detail+' · '+a.correct+'/'+a.total+
+    ' ('+Math.round(a.correct/a.total*100)+'%)'+(a.hints?' · Supports/hints: '+a.hints:' · No requested hints');
+   label.append(cb,text);box.append(label);
+  }
+ }
+ const approved=iepApproved(g),recent=approved.slice(-g.window);
+ const successes=recent.filter(a=>a.correct/a.total*100>=g.criterion).length;
+ const enough=recent.length>=g.window,met=enough&&successes>=g.required;
+ progress.append(reportNode('p',approved.length+' teacher-approved trials · '+successes+' of the most recent '+recent.length+
+  ' met '+g.criterion+'% accuracy. Criterion: '+g.required+' of '+g.window+' trials.'));
+ progress.append(reportNode('p',!enough?'Not enough approved trials to evaluate the criterion.':met?'Criterion met within the latest review window.':'Criterion not met within the latest review window.'));
+ if(g.objectives.length)progress.append(reportNode('p','Objectives: '+g.objectives.join(' | '),'help'));
+ const name=reportStudentName(g.studentId);
+ const last=recent[recent.length-1],lastDate=last?.at?new Date(last.at).toLocaleString():'not recorded';
+ statement.textContent=name+' — '+g.title+'. '+approved.length+' teacher-approved qualifying trial(s) recorded. '+
+  (enough?'Across the latest '+g.window+' approved trials, '+successes+' met the '+g.criterion+'% accuracy target; the criterion of '+g.required+' of '+g.window+' is '+(met?'met.':'not yet met.'):'Additional approved trials are needed to evaluate the '+g.required+' of '+g.window+' criterion.')+
+  (last?' Most recent approved trial: '+Math.round(last.correct/last.total*100)+'% ('+last.correct+'/'+last.total+') on '+lastDate+'.':'')+
+  ' Review activity alignment, independence, and other evidence before using this statement in an IEP.';
+}
+el('iepStudent').addEventListener('change',iepSyncGoals);
+el('iepGoalSelect').addEventListener('change',iepLoadGoal);
+el('iepNewGoal').addEventListener('click',iepNewGoal);
+el('iepSaveGoal').addEventListener('click',iepSaveGoal);
+el('iepDeleteGoal').addEventListener('click',()=>{
+ const g=iepGoal();if(!g)return;
+ if(!confirm('Delete this fictional goal and its evidence approvals?'))return;
+ questState.iepGoals=questState.iepGoals.filter(x=>x.id!==g.id);
+ saveMathQuestDemo();iepSyncGoals();
+});
+el('iepCopy').addEventListener('click',async()=>{
+ const value=el('iepStatement').textContent;
+ try{await navigator.clipboard.writeText(value);el('iepMessage').textContent='Draft statement copied.'}
+ catch(error){el('iepMessage').textContent='Clipboard access unavailable. Select and copy the statement manually.'}
+});
+el('iepPrint').addEventListener('click',()=>{el('iepTracker').classList.add('printing');window.print();el('iepTracker').classList.remove('printing')});
+const priorRenderRostersForIep=renderRosters;
+renderRosters=function(...args){const result=priorRenderRostersForIep(...args);iepSyncStudents();return result};
+iepSyncStudents();
+
+el('assignmentClass').addEventListener('change',refreshQuestUI);
+el('assignmentScope').addEventListener('change',refreshQuestUI);
+el('createAssignment').addEventListener('click',createQuest);
+el('practiceStudent').addEventListener('change',renderStudentQuests);
+el('practiceType').addEventListener('change',renderStudentQuests);
+el('progressStudent').addEventListener('change',renderProgress);
+el('checkFact').addEventListener('click',checkFact);
+el('factAnswer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!questState.questionAnswered)checkFact()}});
+el('readFact').addEventListener('click',()=>{if(questState.session&&!questState.questionAnswered){const [x,y]=questState.session.questions[questState.session.questionIndex];speak(x+' times '+y+' equals what?')}});
+el('factHint').addEventListener('click',()=>{if(!questState.session||questState.questionAnswered)return;const [x,y]=questState.session.questions[questState.session.questionIndex];questState.usedHint=true;el('factHintText').textContent='Think of '+x+' groups of '+y+'. Count by '+y+': '+Array.from({length:x},(_,i)=>(i+1)*y).join(', ')+(x===0?' (zero groups)':'')+'.'});
+el('nextFact').addEventListener('click',nextFactQuestion);
+el('finishFact').addEventListener('click',finishQuest);
+const previousRenderRosters=renderRosters;
+renderRosters=function(){previousRenderRosters();refreshQuestUI()};
+refreshQuestUI();
+
+for(const cls of demo.classes.filter(c=>c.id!=='c1')){
+  const row=document.createElement('div');row.className='list-card';
+  row.textContent='📘 '+cls.name+' (practice only)';
+  el('classList').append(row);
+}
+el('clearDemoData').addEventListener('click',()=>{
+  if(!confirm('Delete all fictional Math Quest demo classes, assignments, and practice results saved in this browser?'))return;
+  try{localStorage.removeItem(MATH_QUEST_STORAGE_KEY)}catch(error){console.warn(error)}
+  location.reload();
+});
+renderRosters();render();
+</script>
+</body></html>
